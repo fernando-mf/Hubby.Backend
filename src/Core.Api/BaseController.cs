@@ -10,7 +10,7 @@ namespace Core.Api
 {
     [ApiController]
     [Authorize]
-    public abstract class BaseController: ControllerBase
+    public abstract class BaseController : ControllerBase
     {
         private readonly IMediator _mediator;
         private readonly IExceptionHandler _exceptionHandler;
@@ -23,7 +23,8 @@ namespace Core.Api
             _unitOfWork = unitOfWork;
         }
 
-        protected async Task<IActionResult> SendRequest<TRequest, TResponse>(TRequest request) where TRequest: IRequest<TResponse>
+        protected async Task<IActionResult> SendRequest<TRequest, TResponse>(TRequest request)
+            where TRequest : IRequest<TResponse>
         {
             try
             {
@@ -44,7 +45,7 @@ namespace Core.Api
             {
                 await _mediator.Publish(notification);
                 await _unitOfWork.Commit();
-                return Ok();
+                return NoContent();
             }
             catch (Exception e)
             {
